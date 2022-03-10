@@ -124,22 +124,27 @@ function loginForm(){
                                 header("Location:shop.php");
                             }
                         }
-                        else
+                        else{
                             echo poruka("Korisnik '{$email}' nije aktivan iz razloga '{$red['komentar']}'", 0);
                             echo poruka("<a href='#' style='text-decoration: underline;'>Kontaktirajte Administratora</a>", 2);
-                            Log::upisi("../logs/".date("Y-m-d")."_logovanja.log", "Pokušaj prijave neaktivnog korisnika '{$red['email']}'");
+                            Log::upisi("../logs/".date("Y-m-d")."_logovanja.log", "Pokušaj prijave neaktivnog korisnika: '{$red['email']}'");
+                        }     
                     }
-                    else
+                    else{
                         echo poruka("Neispravna lozinka za korisnika <br> '{$email}'", 0);
+                        Log::upisi("../logs/".date("Y-m-d")."_logovanja.log", "Pogrešna lozinka za korisnika: '{$red['email']}'");
+                    }  
                 }
-                else
+                else{
                     echo poruka("Korisnik sa email adresom <br> '{$email}' ne postoji.", 2);
+                    Log::upisi("../logs/".date("Y-m-d")."_logovanja.log", "Pokušaj logovanja neregistrovanog korisnika: '{$email}'");
+                }
             }
             else{
                 echo poruka("Email ili Lozinka sadrže <br> nedozvoljene karaktere!!!", 0);
                 echo poruka("/, ?, <, >, ...", 0);
-            }
-                
+                Log::upisi("../logs/".date("Y-m-d")."_logovanja.log", "Podaci sadrže nedozvoljene karaktere: '{$email}' '{$lozinka}' {$_SERVER['REMOTE_ADDR']} ");
+            }  
         }
         else
             echo poruka("Svi podaci su obavezni.", 2);
@@ -257,20 +262,27 @@ function dodavanjeKorisnika(){
                                             if(@move_uploaded_file($_FILES['avatar']['tmp_name'], "../img/avatars/{$imeAvatara}")){
         
                                                 echo poruka("Korisnik je uspešno kreiran sa profilnom slikom.", 1);
+                                                Log::upisi("../logs/".date("Y-m-d")."_korisnici.log", "Uspešno kreiran korisnik: '{$email}', Korisnika kreirao: '{$_SESSION['korisnik']}'");
                                             }
                                             else{
                                                 echo poruka("Korisnk kreiran bez profilne slike.", 1);
+                                                // Ne radi
                                                 echo poruka("Greška!!! Profilna slika nije postavljena.", 0); 
+                                                Log::upisi("../logs/".date("Y-m-d")."_korisnici.log", "Uspešno kreiran korisnik bez avatara: '{$email}', Korisnika kreirao: '{$_SESSION['korisnik']}'");
                                             }
                                         }   
                                         else{
                                             echo poruka("Korisnk kreiran bez profilne slike.", 1);
+                                            // Ne radi
+                                            Log::upisi("../logs/".date("Y-m-d")."_korisnici.log", "Uspešno kreiran korisnik bez avatara - Velika slika: '{$email}', Korisnika kreirao: '{$_SESSION['korisnik']}'");
                                             echo poruka("Maksimalna veličina slike Avatara je 400x400 pixela.", 2);  
                                         }
                                     }
                                     else{
                                         echo poruka("Korisnk kreiran bez profilne slike.", 1);
+                                        Log::upisi("../logs/".date("Y-m-d")."_korisnici.log", "Uspešno kreiran korisnik bez avatara - Nepodrzana ekstenzija fajla: '{$email}', Korisnika kreirao: '{$_SESSION['korisnik']}'");
                                         echo poruka("Neodgovarajući tip slike. Dozvoljene extenzije su '.jpg, .jpeg i .png'", 2);
+                                       
                                     }    
                                 }
                                 else
@@ -282,9 +294,11 @@ function dodavanjeKorisnika(){
                         else
                             echo poruka("Korisnik uspešno dodat <br> bez profilne slike sa ID: " .mysqli_insert_id($db), 1);
                     }
-                    else 
+                    else {
                         echo poruka("Neuspelo izvršenje upita.", 0);
+                        Log::upisi("../logs/".date("Y-m-d")."_korisnici.log", "Neuspešno dodavanje korisnika: '{$email}' - '{mysqli_error($db)}' ");
                         // echo poruka(mysqli_error($db), 0);
+                    } 
                 }
                 else
                     echo poruka("Korisnik sa email adresom '{$email}' već postoji.", 0); 
@@ -313,10 +327,12 @@ function brisanjeKorisnika(){
 
             if(mysqli_error($db)){
                 echo poruka("Greška prilikom brisanja korisnika!!!", 0);
+                Log::upisi("../logs/".date("Y-m-d")."_korisnici.log", "Greška prilikom brisanja korisnika!!!: '{$idKorisnik}' - mysqli_error($db) ");
                 echo poruka(mysqli_error($db), 0);
             }
             else
                 echo poruka("Korisnik je uspešno obrisan.", 1);
+                Log::upisi("../logs/".date("Y-m-d")."_korisnici.log", "Uspešno obrisan korisnik: '{$idKorisnik}', Korisnika obrisao: '{$_SESSION['korisnik']}'");
                 if(file_exists("../img/avatars/{$idKorisnik}.png")) unlink("../img/avatars/{$idKorisnik}.png");
 
                 // $upit="UPDATE proizvodi SET obrisan=0 WHERE autor={$idKorisnik} ";
@@ -327,8 +343,11 @@ function brisanjeKorisnika(){
                     echo poruka("Greška prilikom brisanja Proizvoda za Korisnika!!!", 0);
                     echo poruka(mysqli_error($db), 0);
                 }
-                else
+                else{
                     echo poruka("Svi Proizvodi za korisnika <br> su uspešno obrisani.", 1);
+                    Log::upisi("../logs/".date("Y-m-d")."_korisnici.log", "Uspešno obrisani proizvodi zajedno sa korisnikm: '{$idKorisnik}', Korisnika obrisao: '{$_SESSION['korisnik']}'");
+                }
+                    
 
         }
         else

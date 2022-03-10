@@ -49,6 +49,7 @@
                             <option value="logovanja.log">Logovanje .log</option>
                             <option value="komentari.log">Komentari .log</option>
                             <option value="proizvodi.log">Proizvodi .log</option>
+                            <option value="korisnici.log">Korisnici .log</option>
                         </select>
                         <button class="btn-login">Pogledaj Log</button>
                     </form>   
