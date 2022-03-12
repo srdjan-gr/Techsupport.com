@@ -7,7 +7,7 @@
     }
 ?>
 
-
+<!-- SHOP stranica - Kartice koje pokazuju kategorije na prvoj stranici SHOP-a -->
 <!-- Grid -->
 <div class="grid-shop-container">
     <div class="grid-shop">
@@ -19,9 +19,8 @@
             while($red=$db->fetch_object($rezultat)){
                 echo    "<div class='grid-shop-content'>";
                 echo        "<div class='grid-content-text'>";
-
-                echo        "<li><a href='proizvod.php?id={$red->id}'>{$red->naziv}</a></li>";
-                echo    "</div>";
+                echo            "<li><a href='proizvod.php?id={$red->id}'>{$red->naziv}</a></li>";
+                echo        "</div>";
                 // echo        "<img src='' alt=''>";
                 echo    "</div>";
             }

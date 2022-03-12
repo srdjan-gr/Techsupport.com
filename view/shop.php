@@ -31,7 +31,6 @@
     <div class="main">
         <div class="container">
             <div class="shop-main">
-                <?php require_once('shopmenu.php')?>
                 <?php require_once('shopcards.php')?>  
             </div>
         </div>

@@ -6,7 +6,7 @@
         exit();
     } 
 ?>
-
+<!-- SHOP stranica - Meni sa leve strane kategorije. Sluzi kao glavni meni za Mobilne uredjaje. Sluzi za meni DASHBOARDA -->
 <div class="aside-shop">
     <ul class="shop-menu">
         <?php

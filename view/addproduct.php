@@ -9,7 +9,7 @@
 
     nisteUlogovani();
 
-    nisteUlogovaniAdmin();
+    ulogovanDashboard();
 
     statistika($db);
 
@@ -44,32 +44,38 @@
                 
                 <div class="big-card">
                     <div class="big-card-header">
-                        <h2>Dodavanje Korisnika</h2>
+                        <h2>Dodavanje Proizvoda</h2>
                     </div>
                     
-                    <form action="adduser.php" method="POST" enctype="multipart/form-data">
-                        <!-- <label style="padding: 0px; margin:0px" for="ime">*</label> -->
-                        <input type="text" name="ime" placeholder="Ime korisnika...">
-                        <input type="text" name="prezime" placeholder="Prezime korisnika...">
-                        <input type="email" name="email" placeholder="Email korisnika...">
-                        <textarea name="komentar" id="" cols="30" rows="6" placeholder="Komentar..."></textarea>
-                        <input type="password" name="lozinka" placeholder="Lozinka...">
+                    <form action="addproduct.php" method="POST" enctype="multipart/form-data">
+        
+                        <input type="text" name="naslov" placeholder="Ime Proizvoda...">
+                        <!-- <input type="text" name="prezime" placeholder="Prezime korisnika...">
+                        <input type="email" name="email" placeholder="Email korisnika..."> -->
+                        <textarea name="tekst" id="" cols="30" rows="6" placeholder="Opis proizvoda..."></textarea>
+                        <input type="text" name="cena" placeholder="Cena proizvoda...">
                         
-                        <select name="status" id="status">
-                            <option value="0">Odaberi Status korisnika...</option>
-                            <option value="Urednik">Urednik</option>
-                            <option value="Korisnik">Korisnik</option>
-                            <option value="Admin">Admin</option>
+                        <select name="kategorija" id="kategorija">
+                            <option value="0">Izaberite kategoriju proizvoda...</option>
+                            <?php
+                                $upit="SELECT * FROM shop_kategorije ORDER BY naziv ASC";
+                                $rezultat=mysqli_query($db=konekcija(), $upit);
+
+                                while($red=mysqli_fetch_assoc($rezultat)){
+                                    echo "<option value=' {$red['id']} '> {$red['naziv']} </option>";
+                                }
+
+                            ?>
                         </select>
 
-                        <label for="file-input" class="file-input" >Odaberi sliku Avatara...</label>
-                        <input type="file" name="avatar" id="file-input" >
+                        <label for="file-input" class="file-input" >Slika proizvoda...</label>
+                        <input type="file" name="slike[]" multiple id="file-input" >
                     
                         <div class="big-card-footer">
-                            <button class="btn">Dodaj Korisnika</button>
+                            <button class="btn">Dodaj proizvod</button>
                         </div>
                         
-                        <?php dodavanjeKorisnika();?>
+                        <?php dodavanjeProizvoda();?>
 
                     </form>
                     <a href="#"></a>

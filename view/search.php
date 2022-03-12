@@ -13,7 +13,7 @@
 
 ?>
 
-    <form class="search container" action="shop.php" method="POST" > 
-        <input type="text" name="termin" placeholder="Pretraži...">
-        <button><ion-icon name="search" size=""></ion-icon></button>
-    </form>
+<form class="search container" action="shop.php" method="POST" >
+    <button><ion-icon name="search" size=""></ion-icon></button> 
+    <input type="text" name="termin" placeholder="Pretraži...">
+</form>

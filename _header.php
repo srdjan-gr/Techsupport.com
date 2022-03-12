@@ -46,6 +46,11 @@
             <li> <a href="shop.php" class="highlight">SHOP</a></li>
             <!-- <li> <a href="login.php" class="">Login</a></li> -->
             <?php
+
+                if(login()){
+                    echo "<li> <a href='dashboard.php' class=''>Dash</a></li>";
+                }
+
                 if(login())
                 {
                     echo "<li> <a href='logout.php' class=''>Logout</a></li>";
@@ -55,12 +60,7 @@
 
             ?>
             <ion-icon name="menu-outline" class="menu"></ion-icon>
-
-        
-
         </div>
-
-      
     </div>
 </nav>
 <!-- Nav end -->

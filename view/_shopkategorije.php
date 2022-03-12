@@ -7,25 +7,19 @@
     } 
 ?>
 
+<!-- SHOP stranica - Meni ispod logovanog usera koji prikazije sve kategorije -->
 <div class="nav-sub">
     <ul class="container">
 
         <?php
-        
-            $upit = "SELECT * FROM shop_kategorije";
-            $rezultat = $db->query($upit);
+            $upit = "SELECT * FROM shop_kategorije ";
+            $rezultat = mysqli_query($db=konekcija(), $upit);
 
-            while($red=$db->fetch_object($rezultat)){
-                echo "<li><a href='proizvod.php?id={$red->id}'>{$red->naziv}</a></li>";
+            while($red=mysqli_fetch_assoc($rezultat)){
+
+                echo "<li><a href='proizvodi.php?kategorija={$red['id']}'>{$red['naziv']}</a></li>";
             }
-        
         ?>
 
-        <!-- <li><a href="#" class="highlight">Tech podloge za miša</a></li> -->
- 
     </ul>
 </div>
-
-<?php 
-    require_once('search.php');
-?>

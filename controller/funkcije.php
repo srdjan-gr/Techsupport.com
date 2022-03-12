@@ -201,14 +201,12 @@ function nisteUlogovaniAdmin(){
 // Funkcija koja proverava da li je korisnik Admin ili Urednik za pristup Dashboardu
 function ulogovanDashboard(){
     if($_SESSION['status']!=='Admin' and $_SESSION['status']!=='Urednik'){
-        // echo poruka("Samo 'Admin' i 'Urednik' mogu pristupiti <br> 'Dashboard' stranici za kreiranje sadržaja", 0) ;
-        // echo "<br>";
-        // echo "<a href='login.php'>Prijavite se</a> <br>"; 
-        // echo "<a href='shop.php'>SHOP</a>"; 
+ 
         header("Location:_backToLogin");
         echo exit();
     }   
 }
+
 
 // Funkcija za dodavanje novog korisnika - Novog korisnika moze da doda samo admin
 function dodavanjeKorisnika(){
@@ -354,4 +352,109 @@ function brisanjeKorisnika(){
             echo poruka("Niste odabrali Korisnika za brisanje.", 2);
     }
 }
+
+// Dodavanje proizvoda
+function dodavanjeProizvoda(){
+
+    if(isset($_POST['naslov']) and isset($_POST['tekst']) and isset($_POST['cena']) and isset($_POST['kategorija']))
+    {
+        $naslov=$_POST['naslov'];
+        $tekst=$_POST['tekst'];
+        $cena=$_POST['cena'];
+        $kategorija=$_POST['kategorija'];
+        // $slike=$_FILES['slike'];
+
+        if($naslov!="" and $tekst!="" and $cena!="" and $kategorija!="0" ){
+
+            $upit="INSERT INTO shop_proizvodi (naslov, tekst, cena, kategorija, autor) VALUES ('{$naslov}', '{$tekst}', {$cena}, '{$kategorija}', '{$_SESSION['id']}')";
+            mysqli_query($db=konekcija(), $upit);
+            
+            if(!mysqli_error($db))
+            {
+               echo poruka("Uspešno dodat proizvod.", 1);
+
+                // Dodati u LOG gde je dodat u koju kategoriju, kako se zove i koja je cena stavljena za proizvod
+               Log::upisi("../logs/".date("Y-m-d")."_proizvodi.log", "Proizvod uspešno dodat: '{$_SESSION['korisnik']}'");
+
+               if(isset($_FILES['slike']['name'][0])){
+                    
+                   $idProizvoda=mysqli_insert_id($db);
+
+                   for($i=0; $i<count($_FILES['slike']['name']); $i++){
+
+                        $imeSlike=microtime(true)."_".$_FILES['slike']['name'][$i];
+
+                        // Ovde treba ubaciti proveru za slike
+                        if(@move_uploaded_file($_FILES['slike']['tmp_name'][$i], "../img/product_photos/".$imeSlike)){
+                       
+                        $upit="INSERT INTO shop_proizvodi_slike (idProizvoda, imeSlike) VALUES ('{$idProizvoda}', '{$imeSlike}')";
+                        mysqli_query($db=konekcija(), $upit);
+
+
+
+                       }
+                   }
+               }
+            }
+            else
+            {
+                echo poruka("Greška prilikom dodavanja proizvoda.", 0);
+                echo poruka(mysqli_error($db), 0);
+                Log::upisi("../logs/".date("Y-m-d")."_proizvodi.log", "Neuspešpno dodavanje proizvoda: '{$_SESSION['korisnik']}'");
+            }
+        }
+        else 
+        {
+            echo poruka("Svi podaci su neophodni!!!", 2);
+            Log::upisi("../logs/".date("Y-m-d")."_proizvodi.log", "Nisu uneti svi podaci za proizvod: '{$_SESSION['korisnik']}'");
+        }
+    }
+}
+
+// Funkcija za Brisanje proizvoda iz baze
+function brisanjeProizvoda(){
+
+    if(isset($_POST['idProizvoda'])){
+
+        $idProizvoda=$_POST['idProizvoda'];
+
+        if($idProizvoda!=0){
+
+            $upit="UPDATE shop_proizvodi SET obrisan=1 WHERE id={$idProizvoda}";
+            mysqli_query($db=konekcija(), $upit);
+
+            if(mysqli_error($db)){
+                echo poruka("Greška prilikom brisanja korisnika!!!", 0);
+                Log::upisi("../logs/".date("Y-m-d")."_proizvodi.log", "Greška prilikom brisanja proizvoda!!!: '{$idProizvoda}' - mysqli_error($db) ");
+                echo poruka(mysqli_error($db), 0);
+            }
+            else
+                // $upit1="SELECT * FROM shop_proizvodi WHERE naslov={$naslov}";
+                // $rez= mysqli_query($db=konekcija(), $upit1);
+                // $red=mysqli_fetch_assoc($rez);
+
+
+                echo poruka("Proizvod je uspešno obrisan.", 1);
+                Log::upisi("../logs/".date("Y-m-d")."_proizvodi.log", "Uspešno obrisan proizvod: '{$idProizvoda}', Obrisao: '{$_SESSION['korisnik']}'");
+                // if(file_exists("../img/product_photos/{$idProizvoda}.png")) unlink("../img/product_photos/{$idProizvoda}.png");
+
+                // $upit="UPDATE shop_proizvodi SET obrisan=1 WHERE autor={$idProizvoda} ";
+                // mysqli_query($db=konekcija(), $upit);
+
+                // if(mysqli_error($db)){
+                //     echo poruka("Greška prilikom brisanja Proizvoda za Korisnika!!!", 0);
+                //     echo poruka(mysqli_error($db), 0);
+                // }
+                // else{
+                //     echo poruka("Svi Proizvodi za korisnika <br> su uspešno obrisani.", 1);
+                //     Log::upisi("../logs/".date("Y-m-d")."_korisnici.log", "Uspešno obrisani proizvodi zajedno sa korisnikm: '{$idKorisnik}', Korisnika obrisao: '{$_SESSION['korisnik']}'");
+                // }
+                    
+
+        }
+        else
+            echo poruka("Niste odabrali Proizvod za brisanje.", 2);
+    }
+}
+
 
