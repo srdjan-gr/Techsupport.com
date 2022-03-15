@@ -7,7 +7,7 @@
     }
 ?>
 
-<!-- SHOP stranica - Kartice koje pokazuju kategorije na prvoj stranici SHOP-a -->
+<!-- Prikaz svih proizvoda iz JEDNE kategorije -->
 <!-- Grid -->
 <div class="grid-shop-container">
     <div class="grid-shop">
@@ -21,26 +21,27 @@
 
                 // var_dump($red);
                 echo    "<div class='grid-shop-content'>";
-                    echo        "<div class='grid-content-text'>";
-                        echo        "<li><a href='proizvod.php?id={$red['id']}'>{$red['naslov']}</a></li>";
-                    echo        "</div>";
+                 
+                        echo    "<div class='grid-shop-content-img'>";
+                                
+                            // $upitfoto="SELECT * FROM shop_proizvodi WHERE id={$_GET['id']}";
+                            // $upit="SELECT * FROM shop_proizvodi_slike WHERE obrisan=0 AND id={$_GET['idProizvoda']}";
+                            // $upitfoto="SELECT * FROM shop_proizvodi_slike WHERE obrisan=0 AND idProizvoda={$_GET['id']}";
+                            // $rezfoto=mysqli_query($db=konekcija(), $upit);
+                            
+                            // if(mysqli_num_rows($rezfoto) > 0){
 
-                    // $upitfoto="SELECT * FROM shop_kategorije WHERE id={$_GET['id']}";
-                    $upitfoto="SELECT * FROM shop_kategorije";
-                    $rezfoto=mysqli_query($db=konekcija(), $upitfoto);
-                    
+                            //     $redfoto=mysqli_fetch_assoc($rezfoto);
+                            //     echo "<img src='../img/product_category_photos/{$redfoto['imeSlike']}' alt=''>"; 
+                            // }
 
-                    if(mysqli_num_rows($rezfoto) > 0){
+                            // echo "<img src='../img/product_category_photos/_no-product.jpg' alt=''>"; 
+                        echo    "</div>";
 
-                        $redfoto=mysqli_fetch_assoc($rezfoto);
-
-                        // var_dump($redfoto);
-
-                        echo        "<img src='../img/product_category_photos/{$redfoto['slika']}' alt=''>"; 
-                    }
-
-
-                
+                        echo        "<div class='grid-shop-content-text'>";
+                            echo        "<li><a href='proizvod.php?id={$red['id']}'>{$red['naslov']}</a></li>";
+                        echo        "</div>";
+             
                 echo    "</div>";
             }
         ?>

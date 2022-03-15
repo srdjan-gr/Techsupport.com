@@ -374,7 +374,7 @@ function dodavanjeProizvoda(){
                echo poruka("Uspešno dodat proizvod.", 1);
 
                 // Dodati u LOG gde je dodat u koju kategoriju, kako se zove i koja je cena stavljena za proizvod
-               Log::upisi("../logs/".date("Y-m-d")."_proizvodi.log", "Proizvod uspešno dodat: '{$_SESSION['korisnik']}'");
+               Log::upisi("../logs/".date("Y-m-d")."_proizvodi.log", "Proizvod '{$naslov}' uspešno dodat od strane: '{$_SESSION['korisnik']}'");
 
                if(isset($_FILES['slike']['name'][0])){
                     
@@ -382,7 +382,7 @@ function dodavanjeProizvoda(){
 
                    for($i=0; $i<count($_FILES['slike']['name']); $i++){
 
-                        $imeSlike=microtime(true)."_".$_FILES['slike']['name'][$i];
+                        $imeSlike=$idProizvoda."-".microtime(true)."_".$_FILES['slike']['name'][$i];
 
                         // Ovde treba ubaciti proveru za slike
                         if(@move_uploaded_file($_FILES['slike']['tmp_name'][$i], "../img/product_photos/".$imeSlike)){
@@ -400,13 +400,13 @@ function dodavanjeProizvoda(){
             {
                 echo poruka("Greška prilikom dodavanja proizvoda.", 0);
                 echo poruka(mysqli_error($db), 0);
-                Log::upisi("../logs/".date("Y-m-d")."_proizvodi.log", "Neuspešpno dodavanje proizvoda: '{$_SESSION['korisnik']}'");
+                Log::upisi("../logs/".date("Y-m-d")."_proizvodi.log", "Neuspešpno dodavanje proizvoda '{$naslov}' od strane: '{$_SESSION['korisnik']}'");
             }
         }
         else 
         {
             echo poruka("Svi podaci su neophodni!!!", 2);
-            Log::upisi("../logs/".date("Y-m-d")."_proizvodi.log", "Nisu uneti svi podaci za proizvod: '{$_SESSION['korisnik']}'");
+            Log::upisi("../logs/".date("Y-m-d")."_proizvodi.log", "Nisu uneti svi podaci za proizvod od strane: '{$_SESSION['korisnik']}'");
         }
     }
 }
@@ -429,13 +429,12 @@ function brisanjeProizvoda(){
                 echo poruka(mysqli_error($db), 0);
             }
             else
-                // $upit1="SELECT * FROM shop_proizvodi WHERE naslov={$naslov}";
-                // $rez= mysqli_query($db=konekcija(), $upit1);
-                // $red=mysqli_fetch_assoc($rez);
-
+                $upit="SELECT * FROM shop_proizvodi WHERE obrisan=1";
+                $rezultat=mysqli_query($db=konekcija(), $upit);
+                $red=mysqli_fetch_assoc($rezultat);
 
                 echo poruka("Proizvod je uspešno obrisan.", 1);
-                Log::upisi("../logs/".date("Y-m-d")."_proizvodi.log", "Uspešno obrisan proizvod: '{$idProizvoda}', Obrisao: '{$_SESSION['korisnik']}'");
+                Log::upisi("../logs/".date("Y-m-d")."_proizvodi.log", "Uspešno obrisan Proizvod: '{$red['naslov']}', Obrisao: '{$_SESSION['korisnik']}'");
                 // if(file_exists("../img/product_photos/{$idProizvoda}.png")) unlink("../img/product_photos/{$idProizvoda}.png");
 
                 // $upit="UPDATE shop_proizvodi SET obrisan=1 WHERE autor={$idProizvoda} ";
@@ -457,4 +456,86 @@ function brisanjeProizvoda(){
     }
 }
 
+function dodavanjeKategorije(){
+
+    if(isset($_POST['imeKategorije'])){
+
+        $imeKategorije=$_POST['imeKategorije'];
+        // $slikaKategorije=$_POST['slikaKategorije'];
+
+        if($imeKategorije!=""){
+
+            $upit="INSERT INTO shop_kategorije (naziv, autor) VALUES ('{$imeKategorije}', '{$_SESSION['korisnik']}')";
+            mysqli_query($db=konekcija(), $upit);
+
+            if(!mysqli_error($db)){
+
+                echo poruka("Uspešno dodata Kategorija: '{$imeKategorije}'.", 1);
+
+                Log::upisi("../logs/".date("Y-m-d")."_kategorije.log", "Kategorija '{$imeKategorije}' uspešno dodata od strane: '{$_SESSION['korisnik']}'");
+            }
+            else{
+                echo poruka("Greška prilikom dodavanja Kategorije.", 0);
+                echo poruka(mysqli_error($db), 0);
+                Log::upisi("../logs/".date("Y-m-d")."_kategorije.log", "Neuspešpno dodavanje Kategorije '{$imeKategorije}' od strane: '{$_SESSION['korisnik']}'");
+            }
+
+            if($_FILES['slikaKategorije']['name']){
+
+                $idKategorije=mysqli_insert_id($db);
+                $imeSlike=$idKategorije."-".microtime(true)."_".$_FILES['slikaKategorije']['name'];
+
+                // Ovde treba ubaciti proveru za slike
+                if(@move_uploaded_file($_FILES['slikaKategorije']['tmp_name'], "../img/product_category_photos/".$imeSlike)){
+                
+                $upit="INSERT INTO shop_kategorije_slike (idKategorije, imeSlike) VALUES ('{$idKategorije}', '{$imeSlike}')";
+                mysqli_query($db=konekcija(), $upit);
+
+
+
+                }
+               
+           }
+        }
+        else
+            echo poruka ("Svi podaci su neophodni.", 2);
+    }
+}
+
+
+
+function brisanjeKategorije(){
+
+    if(isset($_POST['idKategorije'])){
+
+        $idKategorije=$_POST['idKategorije'];
+
+        if($idKategorije!=0){
+
+            $upit="UPDATE shop_kategorije SET obrisan=1 WHERE id={$idKategorije}";
+            mysqli_query($db=konekcija(), $upit);
+
+            if(mysqli_error($db)){
+                echo poruka("Greška prilikom brisanja Kategorije!!!", 0);
+                Log::upisi("../logs/".date("Y-m-d")."_kategorije.log", "Greška prilikom brisanja proizvoda!!!: '{$idKategorije}' - mysqli_error($db)");
+                echo poruka(mysqli_error($db), 0);
+            }
+            else{
+                $upitkategorije="SELECT * FROM shop_kategorije WHERE obrisan=1";
+                $rezultatk=mysqli_query($db=konekcija(), $upitkategorije);
+
+                $red=mysqli_fetch_assoc($rezultatk);
+
+                echo poruka("Kategorija je uspešno obrisana.", 1);
+                Log::upisi("../logs/".date("Y-m-d")."_kategorije.log", "Uspešno obrisana Kategorija: '{$idKategorije}' - '{$red['naziv']}' , Obrisao: '{$_SESSION['korisnik']}'");
+            }
+            
+                
+
+        }
+        else{
+            echo poruka("Niste odabrali Kategoriju za brisanje.", 2);
+        }
+    }
+}
 

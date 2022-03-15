@@ -58,7 +58,7 @@
                         <select name="kategorija" id="kategorija">
                             <option value="0">Izaberite kategoriju proizvoda...</option>
                             <?php
-                                $upit="SELECT * FROM shop_kategorije ORDER BY naziv ASC";
+                                $upit="SELECT * FROM shop_kategorije WHERE obrisan=0 ORDER BY naziv ASC";
                                 $rezultat=mysqli_query($db=konekcija(), $upit);
 
                                 while($red=mysqli_fetch_assoc($rezultat)){

@@ -7,23 +7,54 @@
     }
 ?>
 
+
 <!-- SHOP stranica - Kartice koje pokazuju kategorije na prvoj stranici SHOP-a -->
 <!-- Grid -->
 <div class="grid-shop-container">
     <div class="grid-shop">
   
         <?php
-            $upit = "SELECT * FROM shop_kategorije";
-            $rezultat = $db->query($upit);
+        //  if(isset($_GET['id'])){
 
-            while($red=$db->fetch_object($rezultat)){
-                echo    "<div class='grid-shop-content'>";
-                echo        "<div class='grid-content-text'>";
-                echo            "<li><a href='proizvod.php?id={$red->id}'>{$red->naziv}</a></li>";
-                echo        "</div>";
-                // echo        "<img src='' alt=''>";
-                echo    "</div>";
-            }
+            // $idKategorije=$_GET['id'];
+
+            $upit = "SELECT * FROM shop_kategorije WHERE obrisan=0";
+            $rezultat = mysqli_query($db=konekcija(), $upit);
+
+            while($red=mysqli_fetch_assoc($rezultat)){
+
+                    echo    "<div class='grid-shop-content'>";
+
+                        echo    "<div class='grid-shop-content-img'>";
+
+                            $upitslike="SELECT * FROM shop_kategorije_slike";
+                            // $idslike=$_GET['id'];
+
+                            $rezultatslike=mysqli_query($db=konekcija(), $upitslike);
+
+                            if($redi=mysqli_num_rows($rezultatslike) > 0){
+
+                                $redslike=mysqli_fetch_assoc($rezultatslike);
+                    
+                                echo "<img src='../img/product_category_photos/{$redslike['imeSlike']}' alt=''>"; 
+                                
+                            }
+                            else{
+                                echo "<img src='../img/product_category_photos/_no-product.jpg' alt=''>";
+                            }
+
+
+                        echo    "</div>";
+
+                    echo        "<div class='grid-shop-content-text'>";
+                    echo            "<li><a href='proizvodi.php?kategorija={$red['id']}'>{$red['naziv']}</a></li>";
+                    echo        "</div>";
+
+                    echo    "</div>";
+                }
+                
+               
+            // }
         ?>
     </div>
 </div>

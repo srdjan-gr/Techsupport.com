@@ -12,7 +12,7 @@
     <ul class="container">
 
         <?php
-            $upit = "SELECT * FROM shop_kategorije ";
+            $upit = "SELECT * FROM shop_kategorije WHERE obrisan=0";
             $rezultat = mysqli_query($db=konekcija(), $upit);
 
             while($red=mysqli_fetch_assoc($rezultat)){

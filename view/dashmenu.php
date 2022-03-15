@@ -20,8 +20,8 @@
 
                 echo "<li><a href='addproduct.php'>Dodaj Proizvod</a></li>";
                 echo "<li><a href='deleteproduct.php'>Obriši Proizvod</a></li>";
-                echo "<li><a href='#'>Dodaj Kategoriju</a></li>";
-                echo "<li><a href='#'>Obriši Kategoriju</a></li>";
+                echo "<li><a href='addcategory.php'>Dodaj Kategoriju</a></li>";
+                echo "<li><a href='deletecategory.php'>Obriši Kategoriju</a></li>";
 
                 echo "<li><a href='#'>Promeni Avatara</a></li>";
                 echo "<li><a href='#'>Promeni Lozinku</a></li>";
@@ -36,8 +36,8 @@
                 echo "<hr><br>";
                 echo "<li><a href='addproduct.php'>Dodaj Proizvod</a></li>";
                 echo "<li><a href='deleteproduct.php'>Obriši Proizvod</a></li>";
-                echo "<li><a href='#'>Dodaj Kategoriju</a></li>";
-                echo "<li><a href='#'>Obriši Kategoriju</a></li>";
+                echo "<li><a href='addcategory.php'>Dodaj Kategoriju</a></li>";
+                echo "<li><a href='deletecategory.php'>Obriši Kategoriju</a></li>";
 
                 echo "<li><a href='#'>Promeni Avatara</a></li>";
                 echo "<li><a href='#'>Promeni Lozinku</a></li>";

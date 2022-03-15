@@ -50,6 +50,7 @@
                             <option value="komentari.log">Komentari .log</option>
                             <option value="proizvodi.log">Proizvodi .log</option>
                             <option value="korisnici.log">Korisnici .log</option>
+                            <option value="kategorije.log">Kategorije .log</option>
                         </select>
                         <button class="btn-login">Pogledaj Log</button>
                     </form>   
@@ -63,7 +64,7 @@
     </div>
 
     <section>
-        <div class="height">
+        <div class="stats-view height">
             <div class="container">
                 <div class="content-dash">
                     <div class="content-dash-1">

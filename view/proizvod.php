@@ -19,7 +19,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/style.css">
-    <title>TechSupport | Home</title>
+    <title>TechSupport | Proizvod</title>
 </head>
 
 <body>
@@ -31,46 +31,50 @@
     <!-- Main -->
     <div class="main">
         <div class="wrapper container">
+
+            <!-- Prikaz jednog proizvoda sa slikama, opisom proizvoda, cenom i dugmetom za porucivanje -->
             <div class="proizvod">
 
-            
             <?php
                 if(isset($_GET['id']))
                 {
-                    $idSlike=$_GET['id'];
+                    $idProizvoda=$_GET['id'];
 
-                    $upit="UPDATE shop_proizvodi SET pogledan=pogledan+1 WHERE id={$idSlike}";
-                    $rezultat=$db->query($upit);
+                    $upit="UPDATE shop_proizvodi SET pogledan=pogledan+1 WHERE id={$idProizvoda}";
+                    mysqli_query($db=konekcija(), $upit);
 
-                    $upit="SELECT * FROM pogledproizvodi WHERE obrisan=0 AND id={$idSlike}";
-                    $rezultat=$db->query($upit);
+                    $upit="SELECT * FROM pogledproizvodi WHERE obrisan=0 AND id={$idProizvoda}";
+                    $rezultat=mysqli_query($db=konekcija(), $upit);
 
                     while($red=mysqli_fetch_assoc($rezultat))
                     {
                         echo "<div class='proizvod-card'>";
-                            // echo "<div><a href='index2.php?autor={$red['autor']}'>{$red['ime']} {$red['prezime']}</a></div>";
-                            echo "<div class='proizvod-card-info'>";
-                                echo "<label for=''>Proizvod</label>";
-                                echo "<h2>{$red['naslov']}</h2> <br>";
+                        // echo "<div><a href='index2.php?autor={$red['autor']}'>{$red['ime']} {$red['prezime']}</a></div>";
+                        echo "<div class='proizvod-card-info'>";
+                            echo "<label for=''>Proizvod</label>";
+                            echo "<h2>{$red['naslov']}</h2> <br>";
 
-                                echo "<label for=''>Opis proizvoda</label>";
-                                echo "<div>{$red['tekst']}</div><br>";
-                                
-                     
-                                echo "<label for=''>Kategorija proizvoda</label>";
-                                // echo "<div><a href='proizvodi.php?kategorija={$red['kategorija']}'>{$red['naziv']}</a> | ".date("d.m.Y H:i",strtotime($red['vreme']))."</div> <br><br>";
-                                echo "<div><a href='proizvodi.php?kategorija={$red['kategorija']}'>{$red['naziv']}</a> </div> <br>";
+                            echo "<label for=''>Opis proizvoda</label>";
+                            echo "<div>{$red['tekst']}</div><br>";
+                            
+                 
+                            echo "<label for=''>Kategorija proizvoda</label>";
+                            // echo "<div><a href='proizvodi.php?kategorija={$red['kategorija']}'>{$red['naziv']}</a> | ".date("d.m.Y H:i",strtotime($red['vreme']))."</div> <br><br>";
+                            echo "<div><a href='proizvodi.php?kategorija={$red['kategorija']}'>{$red['naziv']}</a> </div> <br>";
 
-                                echo "<label for=''>Cena proizvoda</label>";
-                                echo "<div>{$red['cena']},00 din</div><br>";
-                            echo "</div>";
+                            echo "<label for=''>Količina</label><br>";
+                            echo "<input type='number' name='komada' id='komada' value='1'><br><br>";
 
-                            echo "<button class='btn-order'>Poruči proizvod</button>";
+                            echo "<label for=''>Cena proizvoda</label>";
+                            echo "<div>{$red['cena']},00 din</div><br>";
                         echo "</div>";
+
+                        echo "<button class='btn-order'>Poruči proizvod</button>";
+                    echo "</div>";
                     }
 
                     // Slike
-                    $upit="SELECT * FROM shop_proizvodi_slike WHERE idProizvoda={$idSlike}"; 
+                    $upit="SELECT * FROM shop_proizvodi_slike WHERE idProizvoda={$idProizvoda}"; 
                     $rezultat=mysqli_query($db=konekcija(), $upit);
 
                     // Uslov - Ako postoje slike u bazi onda iz prikazujemo
@@ -91,13 +95,11 @@
                                     echo "<img src='../img/product_photos/{$red['imeSlike']}' alt=''>";
                                 }  
                             echo "</div>";
-
-                        echo "</div>";
-                        
+                        echo "</div>";  
                     }
                 }
                 else
-                    echo poruka("Niste odabrali proizvod !!!", 2);
+                    echo poruka("Proizvod koji ste odabrali nije trenutno dostupan.", 2);
             ?>
             </div>
         </div>
