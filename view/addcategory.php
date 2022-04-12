@@ -54,12 +54,14 @@
                         <label for="file-input" class="file-input" >Slika kategorije...</label>
                         <input type="file" id="file-input" name="slikaKategorije">
                     
+                        <div class="message">
+                            <div class="message-content" id="messageContent">  <?php dodavanjeKategorije();?>   </div> 
+                        </div>
+
                         <div class="big-card-footer ">
                             <button class="btn-login ">Dodaj kategoriju</button>
                         </div>
                         
-                        <?php dodavanjeKategorije();?>
-
                     </form>
 
                     <a href="#"></a>

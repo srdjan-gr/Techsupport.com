@@ -21,7 +21,7 @@
                         if(isset($_SESSION['id']) and isset($_SESSION['korisnik']) and isset($_SESSION['status']))
                         {
 
-                            $upit="SELECT * FROM korisnici WHERE obrisan=0";
+                            $upit="SELECT * FROM korisnici WHERE obrisan=0 and id={$_SESSION['id']}";
                             $rezultat=mysqli_query($db=konekcija(), $upit);
                             // $red=mysqli_fetch_assoc($rezultat);
 
@@ -42,6 +42,8 @@
                     ?>
                 </div>
 
+                <div id="poruka"></div>
+                
                 <?= $slika ?>
             </div>
         </div>

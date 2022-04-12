@@ -39,18 +39,20 @@
                     <div class="login-header">
                         <h2>Login stranica</h2>
                     </div>   
-                
-                    <!-- <div class="poruka">  </div> -->
-                    <form action="login.php" method="POST">
-                        <input type="text" name="email" placeholder="Email...">
-                        <input type="password" name="lozinka" placeholder="Lozinka...">
+        
+                    <form action="login.php" method="POST" onsubmit="return proveriFormu()">
+                        <input type="text" name="email" id="email" placeholder="Email...">
+                        <br>
+                        <input type="password" name="lozinka" id="lozinka" placeholder="Lozinka...">
                         <div class="checkbox">
                             <input type="checkbox" name="pamcenje">
                             <p>Zapamti me</p>
                         </div>
-
-                         
-                        <div class="message">  <?php loginForm(); ?> </div> 
+                        
+                        <div class="message">
+                            <div class="message-content" id="messageContent">  <?php loginForm();?>   </div> 
+                        </div>
+                        
                         <button class="btn-login">Login</button>
                     </form>
                     <a href="#"></a>
@@ -67,6 +69,7 @@
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="../js/script.js"></script>
 </div>  
 </body>
 

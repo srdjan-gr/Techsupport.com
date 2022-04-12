@@ -46,9 +46,12 @@
                 <div class="small-card">
                     <h2>Brisanje Kategorije</h2>
 
-                    <?= brisanjeKategorije();?>
                     <form action="deletecategory.php" method="POST">
 
+                        <div class="message">
+                            <div class="message-content" id="messageContent">  <?= brisanjeKategorije();?>  </div> 
+                        </div>
+                        
                         <select name="idKategorije" id="idKategorije">
                             <option value="0">Odaberite Kategoriju za brisanje...</option>
                             <?php

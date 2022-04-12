@@ -14,6 +14,9 @@
     --main-color-60:hsla(274, 74%, 9%, 0.6);
     --main-color-70:rgba(25, 6, 40, 0.7);
     --accent-50:rgba(255, 255, 0, 0.5);
+
+    --grey-fade: rgba(150, 150, 150, 0.651);
+    --overlay-dark: rgba(0, 0, 0, .7);
 }
 
 * {
@@ -48,7 +51,10 @@ body {
 
 /*Utility classes  */
 
-a:hover{
+a:hover,
+#popup .popupClose:hover,
+#popup .arrowIcon:hover{
+    cursor: pointer;
     color: var(--hover-txt);
 }
 
@@ -103,6 +109,13 @@ label {
 }
 
 .message{
+    width:100%;
+    height: 6.5rem;
+    display: flex;
+   
+}
+
+.message-content{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -122,7 +135,43 @@ label {
     height: 3.2rem;
     border-radius: 3px;
     opacity: .92;
-}  
+}
+
+.btn-login{
+    width: 100%;
+    height: 2.4rem;
+    background-color: var(--secondary-color);
+    border: none;
+    font-size: 1.2rem;
+    border-radius: 3px;
+    cursor: pointer;
+    /* margin-top: 2rem; */
+}
+
+.btn-order{
+    /* margin-top: 1rem; */
+    width: 100%;
+    height: 2.4rem;
+    border: none;
+    font-size: 1.2rem;
+    border-radius: 3px;
+    cursor: pointer;
+    background-color: var(--tetryary-color);
+}
+
+.btn-login:hover,
+.btn:hover,
+.btn-order:hover{
+    color: var(--hover-txt);
+    transform: scale(0.99);
+    transition:  transform 0.2s ease;
+}
+
+.btn-login:active,
+.btn:active,
+.btn-order:active{
+    transform: scale(0.98);
+}
 /*end of Utility classes  */
 
 /* Start Login, Session */
@@ -135,7 +184,7 @@ label {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    height: 24rem;
+    height: 28rem;
     width: 22rem;
     background-color: var(--main-color);
     padding: 1.5rem;
@@ -154,7 +203,7 @@ label {
     justify-content: center;
     min-width: 19rem;
     /* height: 9rem; */
-    height: 50%;
+    height: 100%;
     /* padding-bottom: 1rem; */
 }
 
@@ -222,14 +271,11 @@ label {
 }
 
 .big-card input:focus,
-.big-card textarea:focus{
+.big-card textarea:focus,
+.komentari-sadrzaj-forma input:focus,
+.komentari-sadrzaj-forma textarea:focus,
+.login input:focus{
     outline: none;
-}
-
-.big-card, .small-card .btn-login:hover {
-    color: var(--hover-txt);
-    /* transform: translateY(2px); */
-    transform: scale(.99);
 }
 
 input[type="file"]{
@@ -298,27 +344,6 @@ input[type="file"]{
     font-weight: 200;
     font-size: 14px;
     font-family: 'Readex Pro', sans-serif;
-}
-
-.btn-login{
-    width: 100%;
-    height: 2.4rem;
-    background-color: var(--secondary-color);
-    border: none;
-    font-size: 1.2rem;
-    border-radius: 3px;
-    cursor: pointer;
-    /* margin-top: 2rem; */
-}
-
-.login .big-card .btn-login:hover{
-    color: var(--hover-txt);
-    /* transform: translateY(2px); */
-    transform: scale(.99);
-}
-
-.login input:focus{
-    outline: none;
 }
 
 .login .checkbox{
@@ -830,7 +855,7 @@ nav {
     padding: 15px;
     position: absolute;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: var(--overlay-dark);
     width: 100%;
 }
 
@@ -894,6 +919,16 @@ nav {
     padding: 5px 0;
 }
 
+.shop-items{
+    display: flex;
+    align-items: center;
+}
+
+.login-logout{
+    display: flex;
+    align-items: center;
+}
+
 .grid-shop {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -927,7 +962,7 @@ nav {
 
 .grid-shop-content-text {
     padding: 15px;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: var(--overlay-dark);
     width: 100%;
     height: 3.4rem;
 }
@@ -938,9 +973,8 @@ nav {
 /* Start Stranica za jedan Proizvod */
 .proizvod{
     display: flex;
-    flex-direction: row-reverse;
     align-items: flex-start;
-    justify-content: space-around;
+    justify-content: center;
     flex-wrap: wrap;
     width: 100%;
 }
@@ -956,12 +990,8 @@ nav {
     background-color: var(--secondary-color);
     opacity: .9;
     border-radius: 3px;
+    margin-left: 1rem;
 }
-
-/* .proizvod-card-info {
-    display: flex;
-    height: 32rem;
-} */
 
 .proizvod-card-info  input{
     height: 1.5rem;
@@ -976,21 +1006,71 @@ nav {
     outline: none;
 }
 
-.proizvod-card .btn-order{
-    /* margin-top: 1rem; */
-    width: 100%;
-    height: 2.4rem;
-    border: none;
-    font-size: 1.2rem;
-    border-radius: 3px;
-    cursor: pointer;
-    background-color: var(--tetryary-color);
+/* Prozor koji prikazuje veliku sliku kada se klikne na glavnu sliku proizvoda */
+#popup{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-100%);
+    transition: transform .3s linear;
+    z-index: 10000;
 }
 
-.proizvod-card .btn-order:hover{
-    color: var(--hover-txt);
-    transform: scale(.99);
+#popup .popupClose{
+    width: 3rem;
+    height: 3rem;
+    color: grey;
+    color: var(--grey-fade);
+    transition:  color .25s linear;
+    position: absolute;
+    top: 5rem;
+    right: 5rem;
 }
+
+.buttonsDiv{
+    padding: 2rem;
+}
+
+#popup .arrowIcon{
+    width: 3rem;
+    height: 3rem;
+    color: grey;
+    color: var(--grey-fade);
+    transition:  color .2s ease;
+    padding: 0 2rem;
+}
+
+.imgOverlay{
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    font-size: 1.6rem;
+    top: 20px;
+    left: 20px;
+    width: 25.5rem;
+    height: 26rem;
+    background-color: rgba(0, 0, 0, 1);
+    opacity: 0;
+    transition: opacity .3s ease;
+    cursor: pointer;
+}
+
+#popup .modalSlika {
+    width: 32rem !important;
+    height: 32rem !important;
+    box-shadow: 5px 5px 2px rgb(26, 26, 26);
+}
+
 
 .images{
     display: flex;
@@ -999,6 +1079,7 @@ nav {
     background-color: var(--secondary-color);
     opacity: .9;
     border-radius: 3px;
+    margin-right: 1rem;
 }
 
 .images-big {
@@ -1009,13 +1090,15 @@ nav {
     height: 28rem;
     overflow: hidden;
     padding: 20px 20px 0 20px;
+    position: relative;
 }
 
 .images-big img{
     width: 26rem;
     height: 26rem;
     overflow: hidden !important;
-
+    z-index: 1000;
+    position: relative;
 }
 
 .images-small{
@@ -1032,8 +1115,97 @@ nav {
     padding-right: 8px;
 }
 
+.images-small img:hover{
+    cursor: pointer !important;
+}
+
 .images-small img:last-child{
     padding-right: 0 !important;
+}
+
+/* Komentari sekcija */
+.komentari{
+    width: 100%;
+    margin: 3rem auto;
+}
+
+.btn-komentari{
+    width: 63%;
+    height: 3rem;
+    margin:2rem 0;
+}
+
+.komentari-sadrzaj{
+    width: 100%;
+    position: relative;
+    overflow-y: hidden;
+    min-height: 26rem;
+}
+
+.komentari-sadrzaj-forma{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 35%;
+    min-height: 26rem;
+    background-color: var(--secondary-color);
+    padding: 20px;
+    opacity: .98;
+    border-radius: 3px;
+    z-index: 101;
+}
+
+#komentari-sadrzaj-forma{
+    transform: translateY(-100%);
+    transition: transform .25s linear;
+}
+
+.komentari-sadrzaj-forma textarea{
+    color: #2c286d !important;
+    height: 10rem;
+    width: 100%;
+    padding: 5px 10px!important;
+    border-radius: 3px;
+    border: none;
+    font-weight: 200;
+    font-size: 14px;
+    font-family: 'Readex Pro', sans-serif;
+}
+
+.komentari-sadrzaj-forma input{
+    color: #2c286d !important;
+    height: 34px;
+    width: 100%;
+    border-radius: 3px;
+    border: none;
+    padding-left: 10px;
+    font-weight: 200;
+    font-size: 14px;
+    font-family: 'Readex Pro', sans-serif;
+}
+
+.komentari-sadrzaj-komentari{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    width: 63%; 
+    min-height: 26rem;
+    background-color: var(--overlay-dark);
+    padding: 20px;
+    border-radius: 3px;
+    z-index: 100;
+}
+
+/* #komentari-sadrzaj-komentari{
+    transform: translateY(0);
+    transition: transform .2s linear;
+} */
+
+.komentari-sadrzaj h2{
+    width: 100%;
 }
 
 
@@ -1102,7 +1274,7 @@ footer {
 
 
 
-/* Mobile */
+/* Small screens */
 @media  (max-width:1240px) {
 
     .container{
@@ -1152,6 +1324,21 @@ footer {
         grid-gap:1.6rem;
     }
 
+    .proizvod-card{
+        margin-left: 0rem;
+        margin-top: .5rem !important;
+    }
+
+    .proizvod{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .images{
+        margin-right: 0rem;
+        margin-bottom: .5rem !important;
+    }
+
 }
 
 @media  (max-width:800px){
@@ -1177,6 +1364,10 @@ footer {
         grid-gap:1.2rem;
     }
 
+    #popup .popupClose{
+        right: 2rem;
+    }
+
 
 }
 
@@ -1200,8 +1391,16 @@ footer {
         padding: 0 10px!important;
     }
 
+    .shop{
+        width: 10rem;
+    }
+
+    .login-logout{
+        display: none;
+    }
+
     .aside-shop {
-        width: 0%;
+        width: 100%;
     }
 
     .shop-menu{
@@ -1216,6 +1415,126 @@ footer {
         display: none;
     }
 
+    .proizvod{
+        display: flex;
+        flex-direction: column;
+        align-items: center !important;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .proizvod-card{
+        justify-content: space-between;
+        margin: 0px !important;
+        height: 30rem;
+        width: 21rem;
+        padding: 15px;
+    }
+
+    .imgOverlay{
+        z-index: 1001;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        top: 15px;
+        left: 15px;
+        width: 19.1rem;
+        height: 21rem;
+    }
+
+    #popup .popupClose{
+        width: 2.4rem;
+        height: 2.4rem;
+        top: 5rem;
+        right: 2rem;
+    }
+    
+    #popup .arrowIcon{
+        width: 2.4rem;
+        height: 2.4rem;
+        padding: 0 2rem;
+    }
+
+    #popup .modalSlika {
+        width: 20rem !important;
+        height: 20rem !important;
+        box-shadow: 5px 5px 1px rgb(41, 41, 41);
+    }
+    
+    .images{
+        margin-right: 0rem;
+        width: 100%;
+    }
+    
+    .images-big {
+        width: 21rem;
+        height: 21rem;
+        padding: 15px 15px 0 15px;
+    }
+    
+    .images-big img{
+        width: 21rem;
+        height: 21rem;
+    }
+    
+    .images-small{
+        width: 21rem !important;
+        height: 6rem !important;
+        padding: 15px;
+    }
+    
+    .images-small img{
+        padding-right: 6px;
+    }
+
+    /* Komentari sekcija */
+    .komentari{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 1.6rem auto;
+    }
+    
+    .btn-komentari{
+        width: 100%;
+        margin: 1rem 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn-komentari button{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        width: 90%;
+    }
+    
+    .komentari-sadrzaj{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column-reverse;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .komentari-sadrzaj-forma{
+        width: 90%;
+        padding: 15px;
+        margin-bottom: 1rem;
+        right: 5%;
+    }
+
+    .komentari-sadrzaj-komentari{
+        width: 90%;
+        padding: 15px;
+    }
+    
     .shop-main{
         justify-content: center;
     }
@@ -1269,5 +1588,43 @@ footer {
     }
 
  
+
+}
+
+@media  (max-width:420px){
+
+    .proizvod-card{
+        width: 90%;
+    }
+
+    .gallery{
+        width: 90%;
+    }
+
+    .images{
+        width: 100%;
+    }
+
+    .images-big {
+        width: 100%;
+    }
+    
+    .images-big img{
+        width: 100%;
+        height: 21rem;
+    }
+
+    .images-small{
+        /* width:19rem !important; */
+        width: 100%;
+        height: 6rem !important;
+        padding: 15px;
+    }
+
+    .imgOverlay{
+        width: 19.4rem;
+        height: 20.1rem;
+    }
+
 
 }

@@ -160,7 +160,7 @@ function login(){
     else if(isset($_COOKIE['id']) and isset($_COOKIE['korisnik']) and isset($_COOKIE['status'])){
 
         // ovaje deo moze da bude samo return:true ALI
-        // Ovo znaci - Ako ne postoje Sesije a postoje Kolacici znace se da je korisnik ulogovan, i     prikazace se korisnik na cijem racunaru su pronadjeni Kolacici. Zato je Sesija=Kolacic
+        // Ovo znaci - Ako ne postoje Sesije a postoje Kolacici znace se da je korisnik ulogovan, i prikazace se korisnik na cijem racunaru su pronadjeni Kolacici. Zato je Sesija=Kolacic
         $_SESSION['id']=$_COOKIE['id'];
         $_SESSION['korisnik']=$_COOKIE['korisnik'];
         $_SESSION['status']=$_COOKIE['status'];

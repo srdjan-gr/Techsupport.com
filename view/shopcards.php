@@ -1,7 +1,7 @@
 <?php
     require_once('../obaveznifajlovi.php');
-    $db= new Baza();
-    if(!$db->connect()){
+    $db= konekcija();
+    if(!$db){
         echo "Neuspela konekcija na bazu";
         exit();
     }
@@ -16,10 +16,10 @@
         <?php
         //  if(isset($_GET['id'])){
 
-            // $idKategorije=$_GET['id'];
+            // $idKategorije=$_POST['id'];
 
             $upit = "SELECT * FROM shop_kategorije WHERE obrisan=0";
-            $rezultat = mysqli_query($db=konekcija(), $upit);
+            $rezultat = mysqli_query($db, $upit);
 
             while($red=mysqli_fetch_assoc($rezultat)){
 
@@ -30,7 +30,7 @@
                             $upitslike="SELECT * FROM shop_kategorije_slike";
                             // $idslike=$_GET['id'];
 
-                            $rezultatslike=mysqli_query($db=konekcija(), $upitslike);
+                            $rezultatslike=mysqli_query($db, $upitslike);
 
                             if($redi=mysqli_num_rows($rezultatslike) > 0){
 
@@ -40,7 +40,7 @@
                                 
                             }
                             else{
-                                echo "<img src='../img/product_category_photos/_no-product.jpg' alt=''>";
+                                // echo "<img src='../img/product_category_photos/_no-product.jpg' alt=''>";
                             }
 
 
